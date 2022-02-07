@@ -1,0 +1,7 @@
+name: BlockLagFix
+main: JavierLeon9966\BlockLagFix\Main
+src-namespace-prefix: JavierLeon9966\BlockLagFix
+author: JavierLeon9966
+version: 0.1.0
+api: 4.0.0
+description: Fixes block lagging
