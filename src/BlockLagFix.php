@@ -21,7 +21,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\world\World;
 use pocketmine\utils\AssumptionFailedError;
 
-final class Main extends PluginBase{
+final class BlockLagFix extends PluginBase{
 
 	public function onEnable(): void{
 		$handler = SimplePacketHandler::createInterceptor($this, EventPriority::HIGHEST);
