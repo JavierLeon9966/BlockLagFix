@@ -26,6 +26,10 @@ final class BlockLagFix extends PluginBase{
 	public function onEnable(): void{
 		$handler = SimplePacketHandler::createInterceptor($this, EventPriority::HIGHEST);
 
+		/**
+		 * @var Block[] $lastBlocks
+		 * @phpstan-var array<int, Block> $lastBlocks
+		 */
 		$lastBlocks = [];
 		$lastNetworkSession = null;
 		$handleUpdateBlock = static function(UpdateBlockPacket $packet, NetworkSession $target) use(&$lastBlocks, &$lastNetworkSession): bool{
