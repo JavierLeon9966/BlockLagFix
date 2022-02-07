@@ -57,10 +57,7 @@ final class BlockLagFix extends PluginBase{
 			$lastBlocks = $oldBlocks;
 			$lastNetworkSession = $target;
 			$handler->interceptOutgoing($handleUpdateBlock);
-			$networkSessionHandler = $target->getHandler();
-			if($networkSessionHandler !== null && !$networkSessionHandler->handleInventoryTransaction($packet)){
-				$target->getInvManager()?->syncAll();
-			}
+			$target->getHandler()?->handleInventoryTransaction($packet);
 			$handler->unregisterOutgoingInterceptor($handleUpdateBlock);
 
 			$blockMapping = RuntimeBlockMapping::getInstance();
