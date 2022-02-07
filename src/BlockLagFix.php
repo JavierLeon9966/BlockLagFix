@@ -29,6 +29,7 @@ final class BlockLagFix extends PluginBase{
 		$lastBlocks = [];
 		$lastNetworkSession = null;
 		$handleUpdateBlock = static function(UpdateBlockPacket $packet, NetworkSession $target) use(&$lastBlocks, &$lastNetworkSession): bool{
+			/** @var NetworkSession $lastNetworkSession */
 			if($target !== $lastNetworkSession){
 				return true;
 			}
