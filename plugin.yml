@@ -4,5 +4,5 @@ src-namespace-prefix: JavierLeon9966\BlockLagFix
 author: JavierLeon9966
 version: 1.0.0
 api: 4.0.0
-mcpe-protocol: [431, 440, 448, 465, 471, 475]
+mcpe-protocol: [431, 440, 448, 465, 471, 475, 486]
 description: Fixes block lagging
