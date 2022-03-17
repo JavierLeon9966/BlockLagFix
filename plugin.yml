@@ -1,6 +1,5 @@
 name: BlockLagFix
 main: JavierLeon9966\BlockLagFix\BlockLagFix
-src-namespace-prefix: JavierLeon9966\BlockLagFix
 author: JavierLeon9966
 version: 1.0.0
 api: 4.0.0
