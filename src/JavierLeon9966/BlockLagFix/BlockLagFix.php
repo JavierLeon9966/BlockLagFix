@@ -62,6 +62,7 @@ final class BlockLagFix extends PluginBase{
 			$lastBlocks = $oldBlocks;
 			$lastNetworkSession = $target;
 			$handler->interceptOutgoing($handleUpdateBlock);
+			/** @noinspection PhpExpressionResultUnusedInspection */
 			$target->getHandler()?->handleInventoryTransaction($packet);
 			$handler->unregisterOutgoingInterceptor($handleUpdateBlock);
 
