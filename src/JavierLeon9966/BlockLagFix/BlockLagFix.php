@@ -8,6 +8,8 @@ use muqsit\simplepackethandler\SimplePacketHandler;
 
 use pocketmine\block\{Block, BlockFactory};
 use pocketmine\block\tile\Spawnable;
+use pocketmine\block\WoodenDoor;
+use pocketmine\block\WoodenTrapdoor;
 use pocketmine\event\EventPriority;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
@@ -71,7 +73,8 @@ final class BlockLagFix extends PluginBase{
 			foreach($lastBlocks as $index => $block){
 				World::getBlockXYZ($index, $x, $y, $z);
 				$blockPosition = new Vector3($x, $y, $z);
-				if(!$oldBlocks[$index]->isSameState($block) || $blockPosition->equals($replacePos)){
+				$oldBlock = $oldBlocks[$index];
+				if(!$oldBlock->isSameState($block) || $blockPosition->equals($replacePos) || (($oldBlock instanceof WoodenDoor || $oldBlock instanceof WoodenTrapdoor) && $blockPosition->equals($clickedPos))){
 					$blockPosition = BlockPosition::fromVector3($blockPosition);
 					$packets[] = UpdateBlockPacket::create(
 						$blockPosition,
