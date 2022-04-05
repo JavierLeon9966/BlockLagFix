@@ -4,9 +4,10 @@ declare(strict_types = 1);
 
 namespace JavierLeon9966\BlockLagFix;
 
-use muqsit\simplepackethandler\interceptor\PacketInterceptor;
+use muqsit\simplepackethandler\interceptor\IPacketInterceptor;
 use muqsit\simplepackethandler\SimplePacketHandler;
 
+use pocketmine\block\tile\Spawnable;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\EventPriority;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -15,13 +16,13 @@ use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
 use pocketmine\network\mcpe\protocol\types\CacheableNbt;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
-use pocketmine\Player\Player;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\world\World;
 
 final class BlockLagFix extends PluginBase{
 
-	private PacketInterceptor $handler;
+	private IPacketInterceptor $handler;
 
 	/** @phpstan-var \Closure(BlockActorDataPacket, NetworkSession): bool */
 	private \Closure $handleBlockActorData;
@@ -93,7 +94,7 @@ final class BlockLagFix extends PluginBase{
 				$posIndex = World::blockHash($pos->x, $pos->y, $pos->z);
 				$this->oldBlocksFullId[$posIndex] = $block->getFullId();
 				$tile = $pos->getWorld()->getTileAt($pos->x, $pos->y, $pos->z);
-				if($tile !== null){
+				if($tile instanceof Spawnable){
 					$this->oldTilesSerializedCompound[$posIndex] = $tile->getSerializedSpawnCompound();
 				}
 			}
@@ -102,7 +103,7 @@ final class BlockLagFix extends PluginBase{
 				$posIndex = World::blockHash($pos->x, $pos->y, $pos->z);
 				$this->oldBlocksFullId[$posIndex] = $block->getFullId();
 				$tile = $pos->getWorld()->getTileAt($pos->x, $pos->y, $pos->z);
-				if($tile !== null){
+				if($tile instanceof Spawnable){
 					$this->oldTilesSerializedCompound[$posIndex] = $tile->getSerializedSpawnCompound();
 				}
 			}
