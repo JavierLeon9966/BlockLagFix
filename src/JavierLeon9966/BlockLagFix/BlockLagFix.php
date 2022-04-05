@@ -4,91 +4,117 @@ declare(strict_types = 1);
 
 namespace JavierLeon9966\BlockLagFix;
 
+use muqsit\simplepackethandler\interceptor\PacketInterceptor;
 use muqsit\simplepackethandler\SimplePacketHandler;
 
-use pocketmine\block\{Block, BlockFactory};
-use pocketmine\block\tile\Spawnable;
+use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\EventPriority;
-use pocketmine\math\Vector3;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
-use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
-use pocketmine\network\mcpe\protocol\types\BlockPosition;
-use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
+use pocketmine\network\mcpe\protocol\types\CacheableNbt;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
+use pocketmine\Player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\world\World;
-use pocketmine\utils\AssumptionFailedError;
 
 final class BlockLagFix extends PluginBase{
 
-	public function onEnable(): void{
-		$handler = SimplePacketHandler::createInterceptor($this, EventPriority::HIGHEST);
+	private PacketInterceptor $handler;
 
-		/**
-		 * @var Block[] $lastBlocks
-		 * @phpstan-var array<int, Block> $lastBlocks
-		 */
-		$lastBlocks = [];
-		$lastNetworkSession = null;
-		$handleUpdateBlock = static function(UpdateBlockPacket $packet, NetworkSession $target) use(&$lastBlocks, &$lastNetworkSession): bool{
-			/** @var NetworkSession $lastNetworkSession */
-			if($target !== $lastNetworkSession){
+	/** @phpstan-var \Closure(BlockActorDataPacket, NetworkSession): bool */
+	private \Closure $handleBlockActorData;
+
+	/** @phpstan-var \Closure(UpdateBlockPacket, NetworkSession): bool */
+	private \Closure $handleUpdateBlock;
+	private ?Player $lastPlayer = null;
+
+	/**
+	 * @var int[]
+	 * @phpstan-var array<int, int>
+	 */
+	private array $oldBlocksFullId = [];
+
+	/**
+	 * @var CacheableNbt[]
+	 * @phpstan-var array<int, CacheableNbt>
+	 */
+	private array $oldTilesSerializedCompound = [];
+
+	public function onEnable(): void{
+		$this->handler = SimplePacketHandler::createInterceptor($this, EventPriority::HIGHEST);
+
+		$this->handleUpdateBlock = function(UpdateBlockPacket $packet, NetworkSession $target): bool{
+			if($target->getPlayer() !== $this->lastPlayer){
 				return true;
 			}
 			$blockHash = World::blockHash($packet->blockPosition->getX(), $packet->blockPosition->getY(), $packet->blockPosition->getZ());
-			if(isset($lastBlocks[$blockHash])){
-				$lastBlocks[$blockHash] = BlockFactory::getInstance()->fromFullBlock(RuntimeBlockMapping::getInstance()->fromRuntimeId($packet->blockRuntimeId));
+			if(RuntimeBlockMapping::getInstance()->fromRuntimeId($packet->blockRuntimeId) !== ($this->oldBlocksFullId[$blockHash] ?? null)){
+				return true;
+			}
+			unset($this->oldBlocksFullId[$blockHash]);
+			if(count($this->oldBlocksFullId) === 0){
+				if(count($this->oldTilesSerializedCompound) === 0){
+					$this->lastPlayer = null;
+				}
+				$this->handler->unregisterOutgoingInterceptor($this->handleUpdateBlock);
 			}
 			return false;
 		};
-		$handler->interceptIncoming(static function(InventoryTransactionPacket $packet, NetworkSession $target) use($handler, $handleUpdateBlock, &$lastBlocks, &$lastNetworkSession): bool{
-			if(!$packet->trData instanceof UseItemTransactionData || $packet->trData->getActionType() !== UseItemTransactionData::ACTION_CLICK_BLOCK){
+		$this->handleBlockActorData = function(BlockActorDataPacket $packet, NetworkSession $target): bool{
+			if($target->getPlayer() !== $this->lastPlayer){
 				return true;
 			}
-			$blockPos = $packet->trData->getBlockPosition();
-			$clickedPos = new Vector3($blockPos->getX(), $blockPos->getY(), $blockPos->getZ());
-			$replacePos = $clickedPos->getSide($packet->trData->getFace());
-			$player = $target->getPlayer() ?? throw new AssumptionFailedError;
-			$world = $player->getWorld();
-			$oldBlocks = [];
-			foreach($clickedPos->sides() as $side){
-				$oldBlocks[World::blockHash($side->x, $side->y, $side->z)] = $world->getBlockAt($side->x, $side->y, $side->z);
+			$blockHash = World::blockHash($packet->blockPosition->getX(), $packet->blockPosition->getY(), $packet->blockPosition->getZ());
+			if($packet->nbt !== ($this->oldTilesSerializedCompound[$blockHash] ?? null)){
+				return true;
 			}
-			foreach($replacePos->sides() as $side){
-				$oldBlocks[World::blockHash($side->x, $side->y, $side->z)] = $world->getBlockAt($side->x, $side->y, $side->z);
-			}
-			$lastBlocks = $oldBlocks;
-			$lastNetworkSession = $target;
-			$handler->interceptOutgoing($handleUpdateBlock);
-			/** @noinspection PhpExpressionResultUnusedInspection */
-			$target->getHandler()?->handleInventoryTransaction($packet);
-			$handler->unregisterOutgoingInterceptor($handleUpdateBlock);
-
-			$blockMapping = RuntimeBlockMapping::getInstance();
-			$packets = [];
-			foreach($lastBlocks as $index => $block){
-				World::getBlockXYZ($index, $x, $y, $z);
-				$blockPosition = new Vector3($x, $y, $z);
-				if(!$oldBlocks[$index]->isSameState($block) || $blockPosition->equals($replacePos)){
-					$blockPosition = BlockPosition::fromVector3($blockPosition);
-					$packets[] = UpdateBlockPacket::create(
-						$blockPosition,
-						$blockMapping->toRuntimeId($block->getFullId()),
-						UpdateBlockPacket::FLAG_NETWORK,
-						UpdateBlockPacket::DATA_LAYER_NORMAL
-					);
-					$tile = $world->getTileAt($blockPosition->getX(), $blockPosition->getY(), $blockPosition->getZ());
-					if($tile instanceof Spawnable){
-						$packets[] = BlockActorDataPacket::create($blockPosition, $tile->getSerializedSpawnCompound());
-					}
+			unset($this->oldTilesSerializedCompound[$blockHash]);
+			if(count($this->oldTilesSerializedCompound) === 0){
+				if(count($this->oldTilesSerializedCompound) === 0){
+					$this->lastPlayer = null;
 				}
-			}
-			foreach($packets as $blockPacket){
-				$target->sendDataPacket($blockPacket);
+				$this->handler->unregisterOutgoingInterceptor($this->handleBlockActorData);
 			}
 			return false;
-		});
+		};
+		$this->getServer()->getPluginManager()->registerEvent(PlayerInteractEvent::class, function(PlayerInteractEvent $event): void{
+			if($event->getAction() !== PlayerInteractEvent::RIGHT_CLICK_BLOCK || !$event->getItem()->canBePlaced()){
+				return;
+			}
+			$this->lastPlayer = $event->getPlayer();
+			$clickedBlock = $event->getBlock();
+			$replaceBlock = $clickedBlock->getSide($event->getFace());
+			$this->oldBlocksFullId = [];
+			$this->oldTilesSerializedCompound = [];
+			foreach($clickedBlock->getAllSides() as $block){
+				$pos = $block->getPosition();
+				$posIndex = World::blockHash($pos->x, $pos->y, $pos->z);
+				$this->oldBlocksFullId[$posIndex] = $block->getFullId();
+				$tile = $pos->getWorld()->getTileAt($pos->x, $pos->y, $pos->z);
+				if($tile !== null){
+					$this->oldTilesSerializedCompound[$posIndex] = $tile->getSerializedSpawnCompound();
+				}
+			}
+			foreach($replaceBlock->getAllSides() as $block){
+				$pos = $block->getPosition();
+				$posIndex = World::blockHash($pos->x, $pos->y, $pos->z);
+				$this->oldBlocksFullId[$posIndex] = $block->getFullId();
+				$tile = $pos->getWorld()->getTileAt($pos->x, $pos->y, $pos->z);
+				if($tile !== null){
+					$this->oldTilesSerializedCompound[$posIndex] = $tile->getSerializedSpawnCompound();
+				}
+			}
+			$this->handler->interceptOutgoing($this->handleUpdateBlock);
+			$this->handler->interceptOutgoing($this->handleBlockActorData);
+		}, EventPriority::MONITOR, $this);
+		$this->getServer()->getPluginManager()->registerEvent(BlockPlaceEvent::class, function(BlockPlaceEvent $event): void{
+			$this->oldBlocksFullId = [];
+			$this->oldTilesSerializedCompound = [];
+			$this->lastPlayer = null;
+			$this->handler->unregisterOutgoingInterceptor($this->handleUpdateBlock);
+			$this->handler->unregisterOutgoingInterceptor($this->handleBlockActorData);
+		}, EventPriority::MONITOR, $this, true);
 	}
 }
