@@ -18,6 +18,7 @@ use pocketmine\network\mcpe\protocol\types\CacheableNbt;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
+use pocketmine\world\format\io\GlobalBlockStateHandlers;
 use pocketmine\world\World;
 
 final class BlockLagFix extends PluginBase{
@@ -51,7 +52,7 @@ final class BlockLagFix extends PluginBase{
 				return true;
 			}
 			$blockHash = World::blockHash($packet->blockPosition->getX(), $packet->blockPosition->getY(), $packet->blockPosition->getZ());
-			if(RuntimeBlockMapping::getInstance()->fromRuntimeId($packet->blockRuntimeId) !== ($this->oldBlocksFullId[$blockHash] ?? null)){
+			if(GlobalBlockStateHandlers::getDeserializer()->deserialize(RuntimeBlockMapping::getInstance()->getBlockStateDictionary()->getDataFromStateId($packet->blockRuntimeId)) !== ($this->oldBlocksFullId[$blockHash] ?? null)){
 				return true;
 			}
 			unset($this->oldBlocksFullId[$blockHash]);
@@ -92,7 +93,7 @@ final class BlockLagFix extends PluginBase{
 			foreach($clickedBlock->getAllSides() as $block){
 				$pos = $block->getPosition();
 				$posIndex = World::blockHash($pos->x, $pos->y, $pos->z);
-				$this->oldBlocksFullId[$posIndex] = $block->getFullId();
+				$this->oldBlocksFullId[$posIndex] = $block->getStateId();
 				$tile = $pos->getWorld()->getTileAt($pos->x, $pos->y, $pos->z);
 				if($tile instanceof Spawnable){
 					$this->oldTilesSerializedCompound[$posIndex] = $tile->getSerializedSpawnCompound();
@@ -101,7 +102,7 @@ final class BlockLagFix extends PluginBase{
 			foreach($replaceBlock->getAllSides() as $block){
 				$pos = $block->getPosition();
 				$posIndex = World::blockHash($pos->x, $pos->y, $pos->z);
-				$this->oldBlocksFullId[$posIndex] = $block->getFullId();
+				$this->oldBlocksFullId[$posIndex] = $block->getStateId();
 				$tile = $pos->getWorld()->getTileAt($pos->x, $pos->y, $pos->z);
 				if($tile instanceof Spawnable){
 					$this->oldTilesSerializedCompound[$posIndex] = $tile->getSerializedSpawnCompound();
