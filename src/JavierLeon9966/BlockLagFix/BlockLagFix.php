@@ -73,7 +73,7 @@ final class BlockLagFix extends PluginBase{
 			}
 			unset($this->oldTilesSerializedCompound[$blockHash]);
 			if(count($this->oldTilesSerializedCompound) === 0){
-				if(count($this->oldTilesSerializedCompound) === 0){
+				if(count($this->oldBlocksFullId) === 0){
 					$this->lastPlayer = null;
 				}
 				$this->handler->unregisterOutgoingInterceptor($this->handleBlockActorData);
