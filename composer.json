@@ -1,0 +1,43 @@
+{
+  "name": "javierleon9966/blocklagfix",
+  "description": "Fixes block lagging",
+  "type": "project",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "require": {
+    "pocketmine/pocketmine-mp": "^4.0.0",
+    "muqsit/simplepackethandler": "master"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^1.2.0",
+    "phpstan/phpstan-strict-rules": "^1.0",
+    "phpstan/extension-installer": "^1.0"
+  },
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "muqsit/simplepackethandler",
+        "version": "master",
+        "autoload": {
+          "classmap": ["src/"]
+        },
+        "source": {
+          "url": "https://github.com/muqsit/simplepackethandler",
+          "type": "git",
+          "reference": "master"
+        }
+      }
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "JavierLeon9966\\BlockLagFix\\": "src"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    }
+  }
+}

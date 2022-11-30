@@ -5,6 +5,7 @@ branches:
 projects:
   BlockLagFix:
     path: ""
+    icon: icon.gif
     libs:
       - src: Muqsit/SimplePacketHandler/SimplePacketHandler
         version: ^0.1.0
