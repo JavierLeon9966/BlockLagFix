@@ -5,7 +5,7 @@
   "minimum-stability": "dev",
   "license": "MIT",
   "require": {
-    "pocketmine/pocketmine-mp": "^4.0.0",
+    "pocketmine/pocketmine-mp": "5.0.0-ALPHA5",
     "muqsit/simplepackethandler": "master"
   },
   "require-dev": {

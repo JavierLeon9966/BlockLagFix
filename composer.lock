@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a594823ffc64f7e4bfa7d9af7d25a04a",
+    "content-hash": "8e2ea3da25ea3a1493631ec2389d4c76",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -263,17 +263,44 @@
             "time": "2020-12-01T19:48:11+00:00"
         },
         {
-            "name": "pocketmine/bedrock-data",
-            "version": "1.12.0+bedrock-1.19.40",
+            "name": "pocketmine/bedrock-block-upgrade-schema",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pmmp/BedrockData.git",
-                "reference": "32690f1dac05608b558fe7c40b6d634772c8e416"
+                "url": "https://github.com/pmmp/BedrockBlockUpgradeSchema.git",
+                "reference": "63f5f5e02e952ffa196a4c0671d7fcf8b8cdd9a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/BedrockData/zipball/32690f1dac05608b558fe7c40b6d634772c8e416",
-                "reference": "32690f1dac05608b558fe7c40b6d634772c8e416",
+                "url": "https://api.github.com/repos/pmmp/BedrockBlockUpgradeSchema/zipball/63f5f5e02e952ffa196a4c0671d7fcf8b8cdd9a4",
+                "reference": "63f5f5e02e952ffa196a4c0671d7fcf8b8cdd9a4",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC0-1.0"
+            ],
+            "description": "Schemas describing how to upgrade saved block data in older Minecraft: Bedrock Edition world saves",
+            "support": {
+                "issues": "https://github.com/pmmp/BedrockBlockUpgradeSchema/issues",
+                "source": "https://github.com/pmmp/BedrockBlockUpgradeSchema/tree/master"
+            },
+            "time": "2022-08-07T19:29:31+00:00"
+        },
+        {
+            "name": "pocketmine/bedrock-data",
+            "version": "dev-modern-world-support",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/BedrockData.git",
+                "reference": "3988f8887581082b53c6da64cac81a7837bba5e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/BedrockData/zipball/3988f8887581082b53c6da64cac81a7837bba5e2",
+                "reference": "3988f8887581082b53c6da64cac81a7837bba5e2",
                 "shasum": ""
             },
             "type": "library",
@@ -284,22 +311,49 @@
             "description": "Blobs of data generated from Minecraft: Bedrock Edition, used by PocketMine-MP",
             "support": {
                 "issues": "https://github.com/pmmp/BedrockData/issues",
-                "source": "https://github.com/pmmp/BedrockData/tree/bedrock-1.19.40"
+                "source": "https://github.com/pmmp/BedrockData/tree/modern-world-support"
             },
-            "time": "2022-10-25T21:45:24+00:00"
+            "time": "2022-11-30T16:22:05+00:00"
         },
         {
-            "name": "pocketmine/bedrock-protocol",
-            "version": "16.0.0+bedrock-1.19.40",
+            "name": "pocketmine/bedrock-item-upgrade-schema",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pmmp/BedrockProtocol.git",
-                "reference": "ce900ffa6a4cc07af92686f27d580dd2e2541382"
+                "url": "https://github.com/pmmp/BedrockItemUpgradeSchema.git",
+                "reference": "d984d2ee7283bc52e8733e7c7da1d0f6b6dc501f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/BedrockProtocol/zipball/ce900ffa6a4cc07af92686f27d580dd2e2541382",
-                "reference": "ce900ffa6a4cc07af92686f27d580dd2e2541382",
+                "url": "https://api.github.com/repos/pmmp/BedrockItemUpgradeSchema/zipball/d984d2ee7283bc52e8733e7c7da1d0f6b6dc501f",
+                "reference": "d984d2ee7283bc52e8733e7c7da1d0f6b6dc501f",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC0-1.0"
+            ],
+            "description": "JSON schemas for upgrading items found in older Minecraft: Bedrock world saves",
+            "support": {
+                "issues": "https://github.com/pmmp/BedrockItemUpgradeSchema/issues",
+                "source": "https://github.com/pmmp/BedrockItemUpgradeSchema/tree/master"
+            },
+            "time": "2022-06-08T13:47:48+00:00"
+        },
+        {
+            "name": "pocketmine/bedrock-protocol",
+            "version": "14.0.0+bedrock-1.19.40",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/BedrockProtocol.git",
+                "reference": "b455a742779fee94d25f931cc2cbf6b2c5d61c1f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/BedrockProtocol/zipball/b455a742779fee94d25f931cc2cbf6b2c5d61c1f",
+                "reference": "b455a742779fee94d25f931cc2cbf6b2c5d61c1f",
                 "shasum": ""
             },
             "require": {
@@ -313,7 +367,7 @@
                 "ramsey/uuid": "^4.1"
             },
             "require-dev": {
-                "phpstan/phpstan": "1.9.0",
+                "phpstan/phpstan": "1.8.8",
                 "phpstan/phpstan-phpunit": "^1.0.0",
                 "phpstan/phpstan-strict-rules": "^1.0.0",
                 "phpunit/phpunit": "^9.5"
@@ -331,9 +385,9 @@
             "description": "An implementation of the Minecraft: Bedrock Edition protocol in PHP",
             "support": {
                 "issues": "https://github.com/pmmp/BedrockProtocol/issues",
-                "source": "https://github.com/pmmp/BedrockProtocol/tree/16.0.0+bedrock-1.19.40"
+                "source": "https://github.com/pmmp/BedrockProtocol/tree/bedrock-1.19.40"
             },
-            "time": "2022-11-19T16:11:48+00:00"
+            "time": "2022-10-25T21:51:46+00:00"
         },
         {
             "name": "pocketmine/binaryutils",
@@ -551,16 +605,16 @@
         },
         {
             "name": "pocketmine/locale-data",
-            "version": "2.11.0",
+            "version": "2.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/Language.git",
-                "reference": "4b33d8fa53eda53d9662a7478806ebae2e4a5c53"
+                "reference": "73db4397b4150b29819bf39cc371924cc2e3f502"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/Language/zipball/4b33d8fa53eda53d9662a7478806ebae2e4a5c53",
-                "reference": "4b33d8fa53eda53d9662a7478806ebae2e4a5c53",
+                "url": "https://api.github.com/repos/pmmp/Language/zipball/73db4397b4150b29819bf39cc371924cc2e3f502",
+                "reference": "73db4397b4150b29819bf39cc371924cc2e3f502",
                 "shasum": ""
             },
             "type": "library",
@@ -568,9 +622,9 @@
             "description": "Language resources used by PocketMine-MP",
             "support": {
                 "issues": "https://github.com/pmmp/Language/issues",
-                "source": "https://github.com/pmmp/Language/tree/2.11.0"
+                "source": "https://github.com/pmmp/Language/tree/2.9.3"
             },
-            "time": "2022-11-25T14:24:34+00:00"
+            "time": "2022-11-12T13:59:25+00:00"
         },
         {
             "name": "pocketmine/log",
@@ -742,16 +796,16 @@
         },
         {
             "name": "pocketmine/pocketmine-mp",
-            "version": "4.11.0",
+            "version": "5.0.0-ALPHA5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/PocketMine-MP.git",
-                "reference": "d450264e1c39077357b240b80688238a8187a758"
+                "reference": "90305a0b9278f3d661c243c8b27d9748c567ae57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/PocketMine-MP/zipball/d450264e1c39077357b240b80688238a8187a758",
-                "reference": "d450264e1c39077357b240b80688238a8187a758",
+                "url": "https://api.github.com/repos/pmmp/PocketMine-MP/zipball/90305a0b9278f3d661c243c8b27d9748c567ae57",
+                "reference": "90305a0b9278f3d661c243c8b27d9748c567ae57",
                 "shasum": ""
             },
             "require": {
@@ -784,14 +838,16 @@
                 "netresearch/jsonmapper": "^4.0",
                 "php": "^8.0",
                 "php-64bit": "*",
-                "pocketmine/bedrock-data": "~1.12.0+bedrock-1.19.40",
-                "pocketmine/bedrock-protocol": "~16.0.0+bedrock-1.19.40",
+                "pocketmine/bedrock-block-upgrade-schema": "dev-master@dev",
+                "pocketmine/bedrock-data": "dev-modern-world-support@dev",
+                "pocketmine/bedrock-item-upgrade-schema": "dev-master",
+                "pocketmine/bedrock-protocol": "~14.0.0+bedrock-1.19.40",
                 "pocketmine/binaryutils": "^0.2.1",
                 "pocketmine/callback-validator": "^1.0.2",
                 "pocketmine/classloader": "^0.2.0",
                 "pocketmine/color": "^0.2.0",
                 "pocketmine/errorhandler": "^0.6.0",
-                "pocketmine/locale-data": "~2.11.0",
+                "pocketmine/locale-data": "~2.9.0",
                 "pocketmine/log": "^0.4.0",
                 "pocketmine/log-pthreads": "^0.4.0",
                 "pocketmine/math": "^0.4.0",
@@ -800,11 +856,10 @@
                 "pocketmine/raklib-ipc": "^0.1.0",
                 "pocketmine/snooze": "^0.3.0",
                 "ramsey/uuid": "^4.1",
-                "symfony/filesystem": "^5.4",
-                "webmozart/path-util": "^2.3"
+                "symfony/filesystem": "^5.4"
             },
             "require-dev": {
-                "phpstan/phpstan": "1.9.2",
+                "phpstan/phpstan": "1.9.1",
                 "phpstan/phpstan-phpunit": "^1.1.0",
                 "phpstan/phpstan-strict-rules": "^1.2.0",
                 "phpunit/phpunit": "^9.2"
@@ -826,7 +881,7 @@
             "homepage": "https://pmmp.io",
             "support": {
                 "issues": "https://github.com/pmmp/PocketMine-MP/issues",
-                "source": "https://github.com/pmmp/PocketMine-MP/tree/4.11.0"
+                "source": "https://github.com/pmmp/PocketMine-MP/tree/5.0.0-ALPHA5"
             },
             "funding": [
                 {
@@ -838,7 +893,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-11-25T20:29:46+00:00"
+            "time": "2022-11-13T14:47:37+00:00"
         },
         {
             "name": "pocketmine/raklib",
@@ -1530,115 +1585,6 @@
                 }
             ],
             "time": "2022-11-03T14:55:06+00:00"
-        },
-        {
-            "name": "webmozart/assert",
-            "version": "1.11.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webmozarts/assert.git",
-                "reference": "11cb2199493b2f8a3b53e7f19068fc6aac760991"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/11cb2199493b2f8a3b53e7f19068fc6aac760991",
-                "reference": "11cb2199493b2f8a3b53e7f19068fc6aac760991",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ctype": "*",
-                "php": "^7.2 || ^8.0"
-            },
-            "conflict": {
-                "phpstan/phpstan": "<0.12.20",
-                "vimeo/psalm": "<4.6.1 || 4.6.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.5.13"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.10-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Webmozart\\Assert\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "Assertions to validate method input/output with nice error messages.",
-            "keywords": [
-                "assert",
-                "check",
-                "validate"
-            ],
-            "support": {
-                "issues": "https://github.com/webmozarts/assert/issues",
-                "source": "https://github.com/webmozarts/assert/tree/1.11.0"
-            },
-            "time": "2022-06-03T18:03:27+00:00"
-        },
-        {
-            "name": "webmozart/path-util",
-            "version": "2.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webmozart/path-util.git",
-                "reference": "d939f7edc24c9a1bb9c0dee5cb05d8e859490725"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/path-util/zipball/d939f7edc24c9a1bb9c0dee5cb05d8e859490725",
-                "reference": "d939f7edc24c9a1bb9c0dee5cb05d8e859490725",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "webmozart/assert": "~1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Webmozart\\PathUtil\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                }
-            ],
-            "description": "A robust cross-platform utility for normalizing, comparing and modifying file paths.",
-            "support": {
-                "issues": "https://github.com/webmozart/path-util/issues",
-                "source": "https://github.com/webmozart/path-util/tree/2.3.0"
-            },
-            "abandoned": "symfony/filesystem",
-            "time": "2015-12-17T08:42:14+00:00"
         }
     ],
     "packages-dev": [
