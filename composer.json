@@ -5,8 +5,8 @@
   "minimum-stability": "dev",
   "license": "MIT",
   "require": {
-    "pocketmine/pocketmine-mp": "5.0.0-ALPHA5",
-    "muqsit/simplepackethandler": "master"
+    "pocketmine/pocketmine-mp": "^5.0.0",
+    "muqsit/simplepackethandler": "0.1.4"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.2.0",
@@ -18,14 +18,14 @@
       "type": "package",
       "package": {
         "name": "muqsit/simplepackethandler",
-        "version": "master",
+        "version": "0.1.4",
         "autoload": {
           "classmap": ["src/"]
         },
         "source": {
-          "url": "https://github.com/muqsit/simplepackethandler",
+          "url": "https://github.com/javierleon9966/simplepackethandler",
           "type": "git",
-          "reference": "master"
+          "reference": "patch-1"
         }
       }
     }
