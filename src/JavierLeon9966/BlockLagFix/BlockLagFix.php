@@ -13,7 +13,7 @@ use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\EventPriority;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\network\mcpe\convert\TypeConverter;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
 use pocketmine\network\mcpe\protocol\types\CacheableNbt;
@@ -53,7 +53,10 @@ final class BlockLagFix extends PluginBase{
 				return true;
 			}
 			$blockHash = World::blockHash($packet->blockPosition->getX(), $packet->blockPosition->getY(), $packet->blockPosition->getZ());
-			if(RuntimeBlockMapping::getInstance()->fromRuntimeId($packet->blockRuntimeId) !== ($this->oldBlocksFullId[$blockHash] ?? null)){
+			if(!isset($this->oldBlocksFullId[$blockHash])){
+				return true;
+			}
+			if(TypeConverter::getInstance()->getBlockTranslator()->internalIdToNetworkId($this->oldBlocksFullId[$blockHash]) !== $packet->blockRuntimeId){
 				return true;
 			}
 			unset($this->oldBlocksFullId[$blockHash]);
@@ -94,7 +97,7 @@ final class BlockLagFix extends PluginBase{
 			$saveOldBlock = function(Block $block): void{
 				$pos = $block->getPosition();
 				$posIndex = World::blockHash($pos->getFloorX(), $pos->getFloorY(), $pos->getFloorZ());
-				$this->oldBlocksFullId[$posIndex] = $block->getFullId();
+				$this->oldBlocksFullId[$posIndex] = $block->getStateId();
 				$tile = $pos->getWorld()->getTileAt($pos->getFloorX(), $pos->getFloorY(), $pos->getFloorZ());
 				if($tile instanceof Spawnable){
 					$this->oldTilesSerializedCompound[$posIndex] = $tile->getSerializedSpawnCompound();
