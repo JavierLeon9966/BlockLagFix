@@ -1,39 +1,40 @@
 name: CI
 
 on:
-   push:
-   pull_request:
-   workflow_dispatch:
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  build:
-    name: PHPStan analysis
+  PHPStan_Analyze:
+    name: PHPStan Analysis
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        php:
-          - "8.0.19"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Setup PHP
-        uses: pmmp/setup-php-action@247e08acd52c1465f8f144c162c88f079d8c1174
+      - name: Setup PHP and tools
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
-          install-path: "./bin"
+          php-version: 8.1
+          tools: phpstan
+          coverage: none
 
-      - name: Restore Composer package cache
+      - name: Get composer cache directory
         id: composer-cache
-        uses: actions/cache@v2
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
         with:
-          path: "~/.cache/composer"
-          key: "php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
-          restore-keys: "php-${{ matrix.php }}-composer-"
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
-      - name: Install PHPStan Composer dependencies
-        run: composer install --prefer-dist --no-interaction
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
-      - name: Run PHPStan
-        run: vendor/bin/phpstan analyze --memory-limit=2G
+      - name: Run PhpStan
+        run: phpstan analyze --no-progress src -c phpstan.neon.dist
