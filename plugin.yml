@@ -1,7 +1,7 @@
 name: BlockLagFix
 main: JavierLeon9966\BlockLagFix\BlockLagFix
 author: JavierLeon9966
-version: 1.15.0
+version: 1.16.0
 api: 5.0.0
 mcpe-protocol: [431, 440, 448, 465, 471, 475, 486, 503, 527, 534, 544, 545, 554, 557, 560, 567, 575, 582, 589, 594, 618, 622]
 description: Fixes block lagging
